@@ -6,17 +6,12 @@
 #'
 #' @return A list with the elements:
 #'
-#' @importFrom stats rnorm GMMAT SIS tidyverse
+#' @importFrom stats rnorm GMMAT SIS tidyverse HDMT
 #'
 #' @export
 #' @examples
 #' p0 <- 20
 CF_OLS <- function(Y, M, Covar, X, d, n, iter.max=3, nsis=NULL, first.half=TRUE, seed=2022, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
-  # ----- Load the packages
-  library(GMMAT)
-  library(SIS)
-  library(tidyverse)
-  library(HDMT)
 
   # Set Seed for producibility
   set.seed(seed)
