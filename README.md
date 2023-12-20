@@ -4,7 +4,7 @@
 
 ## Introduction
 ### Meta-analysis
-Meta-analysis is used to aggregate the effects of interest across multiple studies, while its methodology is largely underexplored in mediation analysis, particularly in estimating the total mediation effect of high-dimensional omics mediators.
+Meta-analysis is a statistical technique used to combine the results of multiple studies to arrive at a comprehensive understanding of a particular field or topic. This method is especially prevalent in fields like medicine, psychology, and social sciences, where individual studies might have varying outcomes or small sample sizes. By aggregating data from several studies, a meta-analysis can provide more robust conclusions, identify patterns, and offer insights that might not be apparent from individual studies. 
 <div align="center"><img src="Figure/MetaAnalysis.png" ></div>
 </br>
 
