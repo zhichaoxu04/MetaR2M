@@ -1,6 +1,6 @@
 #' R2_Meta.R
 #'
-#' A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.
+#' A novel meta-analysis framework of the R-squared (R2)-based mediation effect estimation for high-dimensional omics mediators.
 #'
 #' @param Y Outcome input.
 #' @param M Mediator(s) input.
