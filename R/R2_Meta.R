@@ -2,16 +2,10 @@
 #'
 #' A novel meta-analysis framework of the R-squared (R2)-based mediation effect estimation for high-dimensional omics mediators.
 #'
-#' @param Y Outcome input.
-#' @param M Mediator(s) input.
-#' @param Covar Covariates input.
-#' @param X Exposure input.
-#' @param iter.max Maximum number of iterations for (i)SIS and its variants (Default = 3).
-#' @param nsis Number of pedictors recuited by (I)SIS (Default = NULL).
-#' @param seed Random seed used for sample splitting, and cross-fitting of two subsamples (If the seed = NULL, the data will be evenly split into two halves).
-#' @param FDR Indicator to perform FDR control.
-#' @param FDRCutoff Cut-off point for FDR control.
-#' @param method Methods for the mediators selection: iSIS or HDMT (Default = iSIS).
+#' @param Effects Estimated R2M for each study.
+#' @param Study Study name (Default = NULL).
+#' @param SE Asymptotic standard errors for each study.
+#' @param Method Methods for the meta-analysis.
 #'
 #' @return A list with the three elements:
 #' \itemize{
@@ -48,9 +42,19 @@
 #' @export
 #' @examples
 #' p0 <- 20
-R2_Meta <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
-  x <- 1
-  return(x)
+R2_Meta <- function(Effects, Study=NULL, SE, Method){
+  if(is.null(Study)){
+    study_names <- seq_len(length(Effects))
+  }else{
+    study_names <- Study
+  }
+
+  # Construct the data frame for the meta-analysis
+  resultDF_S <- data.frame(Study = study_names, SampleSize = splitSize, EstR2_S_tem = NA, EstSD_S_tem = NA)
+
+
+
+
 }
 
 

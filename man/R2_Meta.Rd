@@ -4,39 +4,16 @@
 \alias{R2_Meta}
 \title{R2_Meta.R}
 \usage{
-R2_Meta(
-  Y,
-  M,
-  Covar,
-  X,
-  iter.max = 3,
-  nsis = NULL,
-  seed = 2024,
-  FDR = FALSE,
-  FDRCutoff = 0.2,
-  method = "iSIS"
-)
+R2_Meta(Effects, Study = NULL, SE, Method)
 }
 \arguments{
-\item{Y}{Outcome input.}
+\item{Effects}{Estimated R2M for each study.}
 
-\item{M}{Mediator(s) input.}
+\item{Study}{Study name (Default = NULL).}
 
-\item{Covar}{Covariates input.}
+\item{SE}{Asymptotic standard errors for each study.}
 
-\item{X}{Exposure input.}
-
-\item{iter.max}{Maximum number of iterations for (i)SIS and its variants (Default = 3).}
-
-\item{nsis}{Number of pedictors recuited by (I)SIS (Default = NULL).}
-
-\item{seed}{Random seed used for sample splitting, and cross-fitting of two subsamples (If the seed = NULL, the data will be evenly split into two halves).}
-
-\item{FDR}{Indicator to perform FDR control.}
-
-\item{FDRCutoff}{Cut-off point for FDR control.}
-
-\item{method}{Methods for the mediators selection: iSIS or HDMT (Default = iSIS).}
+\item{Method}{Methods for the meta-analysis.}
 }
 \value{
 A list with the three elements:
