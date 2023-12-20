@@ -6,23 +6,17 @@
 #'
 #' @return A list with the elements:
 #'
-#' @importFrom stats rnorm
+#' @importFrom stats rnorm GMMAT SIS tidyverse
 #'
 #' @export
 #' @examples
 #' p0 <- 20
 CF_OLS <- function(Y, M, Covar, X, d, n, iter.max = 3, nsis = NULL, first.half = TRUE, seed = 2022, idx1 = NULL){
-  # ----- Load the packages
-  library(GMMAT)
-  library(SIS)
-  library(tidyverse)
-
   # Set Seed for producibility
   set.seed(seed)
-  startTime <- Sys.time()
+  # startTime <- Sys.time()
 
-  # ------ iSIS for mediators selection ------
-  # Subset 1 Estimation
+  # Sample splitting
   if(!is.null(idx1)){
     idx1 <- idx1
   }else{
@@ -32,14 +26,12 @@ CF_OLS <- function(Y, M, Covar, X, d, n, iter.max = 3, nsis = NULL, first.half =
       set.seed(seed)
       idx1 <- sample(1:n, ceiling(n/2), replace = FALSE)
     }
-
   }
 
-
+  # Covariates
   Covar <- as.matrix(Covar)
-  # if(is.null(nsis)){nsis <- length(Y)/log(length(Y))}
 
-  # Residuas M ~ Cov + X.std
+  # Residuals of M ~ X
   orth_1 <- function(x){
 
     data1 <- data.frame(Med = x,
@@ -79,14 +71,6 @@ CF_OLS <- function(Y, M, Covar, X, d, n, iter.max = 3, nsis = NULL, first.half =
     res <- stats::residuals(l)
     return(res)
   }
-
-
-  # 1st residuals: M ~ Cov + X.std
-  M_res_1 <- apply(M[idx1, ], 2, orth_1)  # 1/2 n * d
-  M_res_1 <- apply(M_res_1, 2, scale)
-
-  M_res_2 <- apply(M[-idx1, ], 2, orth_2)  # 1/2 n * d
-  M_res_2 <- apply(M_res_2, 2, scale)
 
   # M ~ Cov
   M_res_3 <- apply(M[idx1, ], 2, orth_3)  # 1/2 n * d
