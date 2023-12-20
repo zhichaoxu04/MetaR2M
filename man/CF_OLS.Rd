@@ -41,6 +41,14 @@ CF_OLS(
 \value{
 A list with the elements:
 \item{R2M}{Estimated R2-based total mediation effect.}
+\item{SE}{Asymptotic standard errors for R2M.}
+\item{CI_width}{Half width of the 95\% confidence interval.}
+\item{CI_lower}{Lower bound of the 95\% confidence interval.}
+\item{CI_upper}{Upper bound of the 95\% confidence interval.}
+\item{p1}{Number of selected mediators in subsample 1.}
+\item{p2}{Number of selected mediators in subsample 2.}
+\item{R2M}{Estimated R2-based total mediation effect.}
+\item{R2M}{Estimated R2-based total mediation effect.}
 }
 \description{
 A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.

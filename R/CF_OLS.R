@@ -15,6 +15,14 @@
 #'
 #' @return A list with the elements:
 #' \item{R2M}{Estimated R2-based total mediation effect.}
+#' \item{SE}{Asymptotic standard errors for R2M.}
+#' \item{CI_width}{Half width of the 95% confidence interval.}
+#' \item{CI_lower}{Lower bound of the 95% confidence interval.}
+#' \item{CI_upper}{Upper bound of the 95% confidence interval.}
+#' \item{p1}{Number of selected mediators in subsample 1.}
+#' \item{p2}{Number of selected mediators in subsample 2.}
+#' \item{R2M}{Estimated R2-based total mediation effect.}
+#' \item{R2M}{Estimated R2-based total mediation effect.}
 #'
 #' @importFrom stats rnorm residuals lm var qnorm cov
 #' @importFrom SIS SIS
@@ -392,10 +400,10 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
 
   endTime <- Sys.time()
   TimeUsed <- difftime(endTime, startTime, units = "mins")
-  return(list(output = c(R2M = Rsq.mediated, SE = v_asym,  CI_width_asym = CI_width_asym,
-                         CI_low_asym = Rsq.mediated - CI_width_asym, CI_upper_asym = Rsq.mediated + CI_width_asym,
-                         pabBefore_1 = round(pabBefore_1, 0), pabAfter_1 = round(pabAfter_1, 0),
-                         pabBefore_2 = round(pabBefore_2, 0), pabAfter_2 = round(pabAfter_2, 0),
+  return(list(output = c(R2M = Rsq.mediated, SE = v_asym,  CI_width = CI_width_asym,
+                         CI_lower = Rsq.mediated - CI_width_asym, CI_upper = Rsq.mediated + CI_width_asym,
+                         # pabBefore_1 = round(pabBefore_1, 0), pabBefore_2 = round(pabBefore_2, 0),
+                         p1 = round(pabAfter_1, 0),  p2 = round(pabAfter_2, 0),
                          R_YX1=R_YX1, R_YX2=R_YX2, R_YX=R_YX, R_YX_total=R_YX_total,
                          R_YM1=R_YM1, R_YM2=R_YM2, R_YM=R_YM,
                          R_YXM1=R_YXM1, R_YXM2=R_YXM2, R_YXM=R_YXM,
