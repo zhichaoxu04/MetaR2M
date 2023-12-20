@@ -39,7 +39,10 @@ CF_OLS(
 \item{method}{Methods for the mediators selection: iSIS or HDMT (Default = iSIS).}
 }
 \value{
-A list with the elements:
+A list with the three elements:
+\itemize{
+\item A named vector with elements:
+\describe{
 \item{R2M}{Estimated R2-based total mediation effect.}
 \item{SE}{Asymptotic standard errors for R2M.}
 \item{CI_width}{Half width of the 95\% confidence interval.}
@@ -47,8 +50,19 @@ A list with the elements:
 \item{CI_upper}{Upper bound of the 95\% confidence interval.}
 \item{p1}{Number of selected mediators in subsample 1.}
 \item{p2}{Number of selected mediators in subsample 2.}
-\item{R2M}{Estimated R2-based total mediation effect.}
-\item{R2M}{Estimated R2-based total mediation effect.}
+\item{R_YX}{Estimated R2 between X and Y.}
+\item{R_YM}{Estimated R2 between M and Y.}
+\item{R_YXM}{Estimated R2 between XM and Y.}
+\item{SOS}{Shared Over Simple measure, which is R2M/R_YX.}
+\item{SOS_CI_lower}{Lower bound of SOS.}
+\item{SOS_CI_upper}{Upper bound of SOS.}
+\item{Time}{Computational time (in minutes).}
+\item{SampleSize}{Sample size used in the analysis}
+\item{NumMeds}{Number of total mediators for the input.}
+}
+\item \code{m1}{Selected mediators in subsample 1.}
+\item \code{m2}{Selected mediators in subsample 2.}
+}
 }
 \description{
 A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.

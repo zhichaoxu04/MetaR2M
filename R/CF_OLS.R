@@ -13,16 +13,32 @@
 #' @param FDRCutoff Cut-off point for FDR control.
 #' @param method Methods for the mediators selection: iSIS or HDMT (Default = iSIS).
 #'
-#' @return A list with the elements:
-#' \item{R2M}{Estimated R2-based total mediation effect.}
-#' \item{SE}{Asymptotic standard errors for R2M.}
-#' \item{CI_width}{Half width of the 95% confidence interval.}
-#' \item{CI_lower}{Lower bound of the 95% confidence interval.}
-#' \item{CI_upper}{Upper bound of the 95% confidence interval.}
-#' \item{p1}{Number of selected mediators in subsample 1.}
-#' \item{p2}{Number of selected mediators in subsample 2.}
-#' \item{R2M}{Estimated R2-based total mediation effect.}
-#' \item{R2M}{Estimated R2-based total mediation effect.}
+#' @return A list with the three elements:
+#' \itemize{
+#'   \item A named vector with elements:
+#'     \describe{
+#'       \item{R2M}{Estimated R2-based total mediation effect.}
+#'       \item{SE}{Asymptotic standard errors for R2M.}
+#'       \item{CI_width}{Half width of the 95% confidence interval.}
+#'       \item{CI_lower}{Lower bound of the 95% confidence interval.}
+#'       \item{CI_upper}{Upper bound of the 95% confidence interval.}
+#'       \item{p1}{Number of selected mediators in subsample 1.}
+#'       \item{p2}{Number of selected mediators in subsample 2.}
+#'       \item{R_YX}{Estimated R2 between X and Y.}
+#'       \item{R_YM}{Estimated R2 between M and Y.}
+#'       \item{R_YXM}{Estimated R2 between XM and Y.}
+#'       \item{SOS}{Shared Over Simple measure, which is R2M/R_YX.}
+#'       \item{SOS_CI_lower}{Lower bound of SOS.}
+#'       \item{SOS_CI_upper}{Upper bound of SOS.}
+#'       \item{Time}{Computational time (in minutes).}
+#'       \item{SampleSize}{Sample size used in the analysis}
+#'       \item{NumMeds}{Number of total mediators for the input.}
+#'     }
+#'   \item \code{m1}{Selected mediators in subsample 1.}
+#'   \item \code{m2}{Selected mediators in subsample 2.}
+#' }
+#'
+#'
 #'
 #' @importFrom stats rnorm residuals lm var qnorm cov
 #' @importFrom SIS SIS
@@ -403,20 +419,15 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   return(list(output = c(R2M = Rsq.mediated, SE = v_asym,  CI_width = CI_width_asym,
                          CI_lower = Rsq.mediated - CI_width_asym, CI_upper = Rsq.mediated + CI_width_asym,
                          # pabBefore_1 = round(pabBefore_1, 0), pabBefore_2 = round(pabBefore_2, 0),
-                         p1 = round(pabAfter_1, 0),  p2 = round(pabAfter_2, 0),
-                         R_YX1=R_YX1, R_YX2=R_YX2, R_YX=R_YX, R_YX_total=R_YX_total,
-                         R_YM1=R_YM1, R_YM2=R_YM2, R_YM=R_YM,
-                         R_YXM1=R_YXM1, R_YXM2=R_YXM2, R_YXM=R_YXM,
-                         SOS=SOS, v_asym_SOS=v_asym_SOS, SOS_CI_l=SOS_CI_l, SOS_CI_u=SOS_CI_u,
-                         M1c=as.numeric(M1c), M2c=as.numeric(M2c), M1Gamma=as.numeric(M1Gamma), M2Gamma=as.numeric(M2Gamma),
-                         Time = TimeUsed,
-                         n = round(n,0), d = round(d,0)),
+                         p1=round(pabAfter_1, 0),  p2=round(pabAfter_2, 0),
+                         # R_YX1=R_YX1, R_YX2=R_YX2, R_YX=R_YX, R_YM1=R_YM1, R_YM2=R_YM2, R_YXM1=R_YXM1, R_YXM2=R_YXM2,
+                         R_YX=R_YX_total, R_YM=R_YM, R_YXM=R_YXM,
+                         # v_asym_SOS=v_asym_SOS,
+                         SOS=SOS, SOS_CI_lower=SOS_CI_l, SOS_CI_upper=SOS_CI_u,
+                         # M1c=as.numeric(M1c), M2c=as.numeric(M2c), M1Gamma=as.numeric(M1Gamma), M2Gamma=as.numeric(M2Gamma),
+                         Time=TimeUsed,
+                         SampleSize=round(n,0), NumMeds=round(d,0)),
               select1 = m1,
-              select2 = m2,
-
-              AllBeta1 = AllBeta1, AllBetaPvalue1 = AllBetaPvalue1, AllAlpha1=AllAlpha1, AllAlphaPvalue1=AllAlphaPvalue1,
-              Allc1 = Allc1, AllcPvalue1=AllcPvalue1,
-              AllBeta2 = AllBeta2, AllBetaPvalue2 = AllBetaPvalue2, AllAlpha2=AllAlpha2, AllAlphaPvalue2=AllAlphaPvalue2,
-              Allc2 = Allc2, AllcPvalue2=AllcPvalue2))
+              select2 = m2))
 }
 
