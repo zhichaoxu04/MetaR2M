@@ -15,7 +15,9 @@ CF_OLS(
   nsis = NULL,
   first.half = TRUE,
   seed = 2022,
-  idx1 = NULL
+  FDR = FALSE,
+  FDRCutoff = 0.2,
+  method = "iSIS"
 )
 }
 \arguments{
