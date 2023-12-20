@@ -9,25 +9,40 @@ CF_OLS(
   M,
   Covar,
   X,
-  d,
-  n,
   iter.max = 3,
   nsis = NULL,
-  first.half = TRUE,
-  seed = 2022,
+  seed = 2024,
   FDR = FALSE,
   FDRCutoff = 0.2,
   method = "iSIS"
 )
 }
 \arguments{
-\item{leftDmat}{n*(p+nknots+2) design matrix for left end of}
+\item{Y}{Outcome input.}
+
+\item{M}{Mediator(s) input.}
+
+\item{Covar}{Covariates input.}
+
+\item{X}{Exposure input.}
+
+\item{iter.max}{Maximum number of iterations for (i)SIS and its variants (Default = 3).}
+
+\item{nsis}{Number of pedictors recuited by (I)SIS (Default = NULL).}
+
+\item{seed}{Random seed used for sample splitting, and cross-fitting of two subsamples (If the seed = NULL, the data will be evenly split into two halves).}
+
+\item{FDR}{Indicator to perform FDR control.}
+
+\item{FDRCutoff}{Cut-off point for FDR control.}
+
+\item{method}{Methods for the mediators selection: iSIS or HDMT (Default = iSIS).}
 }
 \value{
 A list with the elements:
 }
 \description{
-Calculate the test statistic and p-value for interval-censored competing risks SKAT.
+A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.
 }
 \examples{
 p0 <- 20

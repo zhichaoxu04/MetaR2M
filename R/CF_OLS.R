@@ -1,34 +1,54 @@
 #' CF_OLS.R
 #'
-#' Calculate the test statistic and p-value for interval-censored competing risks SKAT.
+#' A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.
 #'
-#' @param leftDmat n*(p+nknots+2) design matrix for left end of
+#' @param Y Outcome input.
+#' @param M Mediator(s) input.
+#' @param Covar Covariates input.
+#' @param X Exposure input.
+#' @param iter.max Maximum number of iterations for (i)SIS and its variants (Default = 3).
+#' @param nsis Number of pedictors recuited by (I)SIS (Default = NULL).
+#' @param seed Random seed used for sample splitting, and cross-fitting of two subsamples (If the seed = NULL, the data will be evenly split into two halves).
+#' @param FDR Indicator to perform FDR control.
+#' @param FDRCutoff Cut-off point for FDR control.
+#' @param method Methods for the mediators selection: iSIS or HDMT (Default = iSIS).
 #'
 #' @return A list with the elements:
 #'
-#' @importFrom stats rnorm GMMAT SIS tidyverse HDMT
+#' @importFrom stats rnorm residuals lm
+#' @importFrom SIS SIS
+#' @importFrom dplyr select
+#' @importFrom HDMT null_estimation fdr_est
 #'
 #' @export
 #' @examples
 #' p0 <- 20
-CF_OLS <- function(Y, M, Covar, X, d, n, iter.max=3, nsis=NULL, first.half=TRUE, seed=2022, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
+CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
 
-  # Set Seed for producibility
+  # Set Seed for reproducibility
   set.seed(seed)
-  startTime <- Sys.time()
+  # startTime <- Sys.time()
 
-  # ------ iSIS for mediators selection ------
-  # Subset 1 Estimation
-  if (first.half == TRUE) {
+  n_Y <- length(Y)
+  n_X <- length(X)
+  n_M <- length(M)
+  if(n_Y!= n_X | n_Y!= n_M | n_X!= n_M){
+    stop("Sample size of Y, X, or M does not match.")
+  }else{
+    n <- n_Y
+  }
+
+  # Split the sample into two subsamples
+  if (is.null(seed)) {
     idx1 <- 1:(nrow(M) * 1/2)
   } else {
     set.seed(seed)
     idx1 <- sample(1:n, ceiling(n/2), replace = FALSE)
   }
 
+  # Check covariates
   if (!is.null(Covar)){
     Covar <- as.matrix(Covar)
-    # if(is.null(nsis)){nsis <- length(Y)/log(length(Y))}
 
     # Function for M ~ COV
     orth_3 <- function(x){
