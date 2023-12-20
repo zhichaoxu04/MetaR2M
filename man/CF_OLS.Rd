@@ -40,6 +40,7 @@ CF_OLS(
 }
 \value{
 A list with the elements:
+\item{R2M}{Estimated R2-based total mediation effect.}
 }
 \description{
 A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.

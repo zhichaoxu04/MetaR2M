@@ -14,8 +14,9 @@
 #' @param method Methods for the mediators selection: iSIS or HDMT (Default = iSIS).
 #'
 #' @return A list with the elements:
+#' \item{R2M}{Estimated R2-based total mediation effect.}
 #'
-#' @importFrom stats rnorm residuals lm
+#' @importFrom stats rnorm residuals lm var qnorm cov
 #' @importFrom SIS SIS
 #' @importFrom dplyr select
 #' @importFrom HDMT null_estimation fdr_est
@@ -27,7 +28,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
 
   # Set Seed for reproducibility
   set.seed(seed)
-  # startTime <- Sys.time()
+  startTime <- Sys.time()
 
   n_Y <- length(Y)
   n_X <- length(X)
@@ -36,6 +37,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     stop("Sample size of Y, X, or M does not match.")
   }else{
     n <- n_Y
+    d <- ncol(M)
   }
 
   # Split the sample into two subsamples
@@ -70,9 +72,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
       return(res)
     }
 
-
-    # 1st residuals: M ~ Cov
-
+    # Residuals: M ~ Cov
     # M ~ Cov
     M_res_3 <- apply(M[idx1, ], 2, orth_3)  # M ~ Cov -> M.res - train
     M_res_3 <- apply(M_res_3, 2, scale)
@@ -84,8 +84,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     M_res_5 <- apply(M, 2, scale)[idx1, ]
     M_res_6 <- apply(M, 2, scale)[-idx1, ]
 
-
-    # 3rd residuals: Y ~ Cov
+    # Residuals: Y ~ Cov
     tdat_3 <- data.frame(y = Y[idx1],
                          cov = Covar[idx1, ])
     f_3 <- stats::lm(y ~ ., data = tdat_3)
@@ -98,12 +97,11 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     Y_res_4 <- stats::residuals(f_4)    # Y ~ Cov -> Y.res - test
     Y_res_4.std <- as.numeric(scale(Y_res_4, center = T, scale = T))
 
-    # 4th x.std
+    # Standardize X
     X_res_3 <- as.numeric(scale(X[idx1]))
     X_res_4 <- as.numeric(scale(X[-idx1]))
 
-
-    # 4th residuals: X ~ Cov
+    # Residuals: X ~ Cov
     xdat_1 <- data.frame(y = X[idx1],
                          cov = Covar[idx1, ])
     fx_1 <- stats::lm(y ~ ., data = xdat_1)
@@ -138,10 +136,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     M_res_4 <- apply(M_res_4, 2, scale)
   }
 
-
-
-
-  # regress Y on X
+  # Regress Y on X
   tdat1 <- data.frame(y = Y_res_3, x = X_res_1)
   f0 <- stats::lm(y~., data=tdat1)
   Y_res_5 <- stats::residuals(f0)
@@ -150,7 +145,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   f1 <- stats::lm(y~., data=tdat2)
   Y_res_6 <- stats::residuals(f1)
 
-  # regress M on X
+  # Regress M on X
   MX_1 <- function(x){
     data1 <- data.frame(Med = x,
                         envir = X_res_1)
@@ -172,15 +167,6 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
 
   M_res_2 <- apply(M_res_4, 2, MX_2)
   M_res_2 <- apply(M_res_2, 2, scale)  # M.res ~ X.res - test
-
-  # # Get gamma and beta for all M
-  # LmBeta1 <- stats::lm(Y_res_4 ~ M_res_4 + X_res_2)
-  # AllBeta1 <- LmBeta1$coefficients[2:(ncol(M_res_4)+1)]
-  # AllBetaPvalue1 <- summary(LmBeta1)$coefficients[, 4][2:(ncol(M_res_4)+1)]
-  #
-  # LmBeta2 <- stats::lm(Y_res_3 ~ M_res_3 + X_res_1)
-  # AllBeta2 <- LmBeta2$coefficients[2:(ncol(M_res_3)+1)]
-  # AllBetaPvalue2 <- summary(LmBeta2)$coefficients[, 4][2:(ncol(M_res_3)+1)]
 
   Lmc1 <- stats::lm(Y_res_4 ~  X_res_2)
   Allc1 <- Lmc1$coefficients[2]
@@ -238,14 +224,6 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     m1 <- which(JM_FDR1 <= FDRCutoff)
     pabBefore_1 <- length(m1)
     pabAfter_1 <- length(m1)
-
-    cat("In the subsample 1:", "\n")
-    cat("Value of alpha00 is:", nullEst1$alpha00, "\n")
-    cat("Value of alpha01 is:", nullEst1$alpha01, "\n")
-    cat("Value of alpha10 is:", nullEst1$alpha10, "\n")
-    cat("Value of alpha1 is:", nullEst1$alpha1, "\n")
-    cat("Value of alpha2 is:", nullEst1$alpha2, "\n")
-
     nullEst2 <- HDMT::null_estimation(cbind(AllAlphaPvalue2, AllBetaPvalue2))
     JM_FDR2 <- HDMT::fdr_est(alpha00 = nullEst2$alpha00,
                              alpha01 = nullEst2$alpha01,
@@ -257,20 +235,13 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     m2 <- which(JM_FDR2 <= FDRCutoff)
     pabBefore_2 <- length(m2)
     pabAfter_2 <- length(m2)
-
-    cat("In the subsample 2:", "\n")
-    cat("Value of alpha00 is:", nullEst2$alpha00, "\n")
-    cat("Value of alpha01 is:", nullEst2$alpha01, "\n")
-    cat("Value of alpha10 is:", nullEst2$alpha10, "\n")
-    cat("Value of alpha1 is:", nullEst2$alpha1, "\n")
-    cat("Value of alpha2 is:", nullEst2$alpha2, "\n")
-
     if(pabAfter_1 == 0 | pabAfter_1 == 0){
       cat("There is no mediators selected.", "\n")
       break
     }
 
   }else if(method == "iSIS"){
+    # iSIS in subsample 2
     model1 <- invisible(SIS::SIS(x = M_res_1, y = Y_res_5,
                                  family = 'gaussian', tune = 'bic',  seed = 1234,
                                  penalty = 'MCP',
@@ -280,7 +251,6 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     m1 <- model1$ix
     pabAfter_1 <- length(m1)
 
-    # ------ Estimation Procedure ------
     if (length(m1) > 0){
       M1AlphaPvalue <- apply(M_res_4[, m1], 2, function(yyy) cal_alpha_simple(yyy, xxx=X_res_2, type=1)) # M ~ X
       M1Alpha <- apply(M_res_4[, m1], 2, function(yyy) cal_alpha_simple(yyy, xxx=X_res_2, type=2))
@@ -295,7 +265,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
       paste0("There is no mediators selected in the 1st half")
     }
 
-    # ------ Subset 2 Estimation ------
+    # iSIS in subsample 2
     model2 <- invisible(SIS::SIS(x = M_res_2, y = Y_res_6,
                                  family = 'gaussian', tune = 'bic',  seed = 1234,
                                  penalty = 'MCP',
@@ -306,7 +276,6 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     pabAfter_2 <- length(m2)
 
     if (length(m2) > 0) {
-
       M2AlphaPvalue <- apply(M_res_3[, m2], 2, function(yyy) cal_alpha_simple(yyy, xxx=X_res_1, type=1)) # M ~ X
       M2Alpha <- apply(M_res_3[, m2], 2, function(yyy) cal_alpha_simple(yyy, xxx=X_res_1, type=2))
 
@@ -321,7 +290,8 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
     }
   }
 
-  ols1.YW <- lm(Y_res_4 ~ cbind(M_res_4, X_res_2.std)[, c(m1, d + 1)])   # Y ~ M + X
+  # Estimation procedure
+  ols1.YW <- stats::lm(Y_res_4 ~ cbind(M_res_4, X_res_2.std)[, c(m1, d + 1)])   # Y ~ M + X
   err_yw1 <- ols1.YW$residuals
 
   M1Beta <- ols1.YW$coefficients[2:(length(m1)+1)]
@@ -329,10 +299,10 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   M1Gamma <- ols1.YW$coefficients[(length(m1)+2)]
   M1GammaPvalue <- summary(ols1.YW)$coefficients[(length(m1)+2), 4]
 
-  ols1.YZ <- lm(Y_res_4 ~ M_res_4[, m1])                             # Y ~ M
+  ols1.YZ <- stats::lm(Y_res_4 ~ M_res_4[, m1])                             # Y ~ M
   err_yz1 <- ols1.YZ$residuals
 
-  ols1.YX <- lm(Y_res_4 ~ X_res_2)                                    # Y ~ X
+  ols1.YX <- stats::lm(Y_res_4 ~ X_res_2)                                    # Y ~ X
   err_yx1 <- ols1.YX$residuals
   M1c <- ols1.YX$coefficients[2]
   M1cPvalue <- summary(ols1.YX)$coefficients[2, 4]
@@ -347,9 +317,9 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   v_y1 <- mean(err_y1^2)
 
   err1 <- cbind(err_yx1^2, err_yz1^2, err_yw1^2, err_y1^2)
-  A1 <- cov(err1)
+  A1 <- stats::cov(err1)
 
-  ols2.YW <- lm(Y_res_3 ~ cbind(M_res_3, X_res_1.std)[, c(m2, d + 1)])
+  ols2.YW <- stats::lm(Y_res_3 ~ cbind(M_res_3, X_res_1.std)[, c(m2, d + 1)])
   err_yw2 <- ols2.YW$residuals
 
   M2Beta <- ols2.YW$coefficients[2:(length(m2)+1)]
@@ -357,10 +327,10 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   M2Gamma <- ols2.YW$coefficients[(length(m2)+2)]
   M2GammaPvalue <- summary(ols2.YW)$coefficients[(length(m2)+2), 4]
 
-  ols2.YZ <- lm(Y_res_3 ~ M_res_3[, m2])
+  ols2.YZ <- stats::lm(Y_res_3 ~ M_res_3[, m2])
   err_yz2 <- ols2.YZ$residuals
 
-  ols2.YX <- lm(Y_res_3 ~ X_res_1)
+  ols2.YX <- stats::lm(Y_res_3 ~ X_res_1)
   err_yx2 <- ols2.YX$residuals
   M2c <- ols2.YX$coefficients[2]
   M2cPvalue <- summary(ols2.YX)$coefficients[2, 4]
@@ -375,15 +345,15 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   v_y2 <- mean(err_y2^2)
 
   err2 <- cbind(err_yx2^2, err_yz2^2, err_yw2^2, err_y2^2)
-  A2 <- cov(err2)
+  A2 <- stats::cov(err2)
 
   A <- 0.5 * (A1 + A2)
   v_yw <- 0.5 * (v_yw1 + v_yw2)
   v_yz <- 0.5 * (v_yz1 + v_yz2)
   v_yx <- 0.5 * (v_yx1 + v_yx2)
-  v_y <- var(c(Y_res_3, Y_res_4))
-  v_y1 <- var(Y_res_4)
-  v_y2 <- var(Y_res_3)
+  v_y <- stats::var(c(Y_res_3, Y_res_4))
+  v_y1 <- stats::var(Y_res_4)
+  v_y2 <- stats::var(Y_res_3)
 
   ols.YX <- lm(c(Y_res_3, Y_res_4) ~ c(X_res_3, X_res_4))
   RYX_12 <- summary(ols.YX)$adj.r.squared
@@ -407,7 +377,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
   a <- c(-1/v_y, -1/v_y, 1/v_y, (v_yx + v_yz - v_yw)/v_y^2)
   v <- t(a) %*% A %*% a
 
-  # Compute the R2
+  # Compute the R2M
   Rsq.mediated <- 1.0 - (v_yx + v_yz - v_yw) / v_y
   CI_width_asym <- qnorm(0.975) * sqrt(v) / sqrt(n)
   v_asym <- sqrt(v) / sqrt(n)
@@ -422,9 +392,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
 
   endTime <- Sys.time()
   TimeUsed <- difftime(endTime, startTime, units = "mins")
-
-
-  return(list(output = c(Rsq.med = Rsq.mediated, v_asym = v_asym,  CI_width_asym = CI_width_asym,
+  return(list(output = c(R2M = Rsq.mediated, SE = v_asym,  CI_width_asym = CI_width_asym,
                          CI_low_asym = Rsq.mediated - CI_width_asym, CI_upper_asym = Rsq.mediated + CI_width_asym,
                          pabBefore_1 = round(pabBefore_1, 0), pabAfter_1 = round(pabAfter_1, 0),
                          pabBefore_2 = round(pabBefore_2, 0), pabAfter_2 = round(pabAfter_2, 0),
