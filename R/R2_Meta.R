@@ -34,15 +34,16 @@
 #'
 #'
 #'
-#' @importFrom stats rnorm residuals lm var qnorm cov
-#' @importFrom SIS SIS
-#' @importFrom dplyr select
-#' @importFrom HDMT null_estimation fdr_est
+#' @importFrom mvmeta mvmeta
 #'
 #' @export
 #' @examples
-#' p0 <- 20
-R2_Meta <- function(Effects, Study=NULL, SE, Method){
+#' Study <- c(1,2,3,4,5)
+#' Effects <- c(0.1,0.2,0.3,0.4,1.5)
+#' SE <- c(0.01, 0.02, 0.01, 0.08, 0.1)
+#' Method <- "fixed"
+#' MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
+R2_Meta <- function(Effects, Study=NULL, SE, Method="fixed"){
   if(is.null(Study)){
     study_names <- seq_len(length(Effects))
   }else{
@@ -50,8 +51,11 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method){
   }
 
   # Construct the data frame for the meta-analysis
-  resultDF_S <- data.frame(Study = study_names, SampleSize = splitSize, EstR2_S_tem = NA, EstSD_S_tem = NA)
-  maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method="fixed")
+  resultDF_S <- data.frame(Study = study_names, EstR2_S_tem = Effects, EstSD_S_tem = SE)
+  maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method=Method)
+  meta_effect <- as.numeric(maFixed$coefficients)
+
+  return(c(meta_effect=meta_effect))
 
 
 

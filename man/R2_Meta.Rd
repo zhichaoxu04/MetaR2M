@@ -4,7 +4,7 @@
 \alias{R2_Meta}
 \title{R2_Meta.R}
 \usage{
-R2_Meta(Effects, Study = NULL, SE, Method)
+R2_Meta(Effects, Study = NULL, SE, Method = "fixed")
 }
 \arguments{
 \item{Effects}{Estimated R2M for each study.}
@@ -45,5 +45,9 @@ A list with the three elements:
 A novel meta-analysis framework of the R-squared (R2)-based mediation effect estimation for high-dimensional omics mediators.
 }
 \examples{
-p0 <- 20
+Study <- c(1,2,3,4,5)
+Effects <- c(0.1,0.2,0.3,0.4,1.5)
+SE <- c(0.01, 0.02, 0.01, 0.08, 0.1)
+Method <- "fixed"
+MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
 }
