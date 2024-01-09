@@ -31,14 +31,6 @@ A named vector with elements:
 \item{p1}{Number of selected mediators in subsample 1.}
 \item{p2}{Number of selected mediators in subsample 2.}
 \item{R_YX}{Estimated R2 between X and Y.}
-\item{R_YM}{Estimated R2 between M and Y.}
-\item{R_YXM}{Estimated R2 between XM and Y.}
-\item{SOS}{Shared Over Simple measure, which is R2M/R_YX.}
-\item{SOS_CI_lower}{Lower bound of SOS.}
-\item{SOS_CI_upper}{Upper bound of SOS.}
-\item{Time}{Computational time (in minutes).}
-\item{SampleSize}{Sample size used in the analysis}
-\item{NumMeds}{Number of total mediators for the input.}
 }
 }
 \description{
