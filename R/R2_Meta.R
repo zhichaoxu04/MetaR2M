@@ -51,6 +51,7 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method){
 
   # Construct the data frame for the meta-analysis
   resultDF_S <- data.frame(Study = study_names, SampleSize = splitSize, EstR2_S_tem = NA, EstSD_S_tem = NA)
+  maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method="fixed")
 
 
 
