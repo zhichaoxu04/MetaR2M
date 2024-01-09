@@ -3,9 +3,9 @@
 #' A novel meta-analysis framework of the R-squared (R2)-based mediation effect estimation for high-dimensional omics mediators.
 #'
 #' @param Effects Estimated R2M for each study.
-#' @param Study Study name (Default = NULL).
-#' @param SE Asymptotic standard errors for each study.
-#' @param Method Methods for the meta-analysis.
+#' @param Study An optional vector with study labels (Default = NULL).
+#' @param SE 	Standard error of estimate for each study.
+#' @param Method A character string indicating which method is used to estimate the between-study variance \eqn{\tau^2} and its square root \eqn{\tau}.
 #'
 #' @return A named vector with elements:
 #' \describe{
@@ -44,12 +44,23 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
   maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, method.tau = Method)
   # maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method=Method)
 
-  # if()
-  maFixed$TE.common
+  if(Method == "Fixed"){
+    meta_effect <- as.numeric(maFixed$TE.common)
+    meta_CI_lower <- as.numeric(maFixed$lower.common)
+    meta_CI_upper <- as.numeric(maFixed$upper.common)
+    Q <- as.numeric(maFixed$Q)
+    Q_pval <- as.numeric(maFixed$pval.Q)
 
-  meta_effect <- as.numeric(maFixed$coefficients)
 
-  return(c(meta_effect=meta_effect))
+  }else{
+    meta_effect <- as.numeric(maFixed$TE.random)
+    meta_CI_lower <- as.numeric(maFixed$lower.random)
+    meta_CI_upper <- as.numeric(maFixed$upper.random)
+  }
+
+
+
+  return(c(meta_effect=meta_effect, meta_CI_lower=meta_CI_lower, meta_CI_upper=meta_CI_upper, Method=Method))
 }
 
 

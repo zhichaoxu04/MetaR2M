@@ -14,11 +14,11 @@ R2_Meta(
 \arguments{
 \item{Effects}{Estimated R2M for each study.}
 
-\item{Study}{Study name (Default = NULL).}
+\item{Study}{An optional vector with study labels (Default = NULL).}
 
-\item{SE}{Asymptotic standard errors for each study.}
+\item{SE}{Standard error of estimate for each study.}
 
-\item{Method}{Methods for the meta-analysis.}
+\item{Method}{A character string indicating which method is used to estimate the between-study variance \eqn{\tau^2} and its square root \eqn{\tau}.}
 }
 \value{
 A named vector with elements:
