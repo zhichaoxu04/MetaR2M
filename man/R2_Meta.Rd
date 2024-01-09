@@ -40,8 +40,8 @@ A novel meta-analysis framework of the R-squared (R2)-based mediation effect est
 Study <- c(1,2,3,4,5)
 Effects <- c(0.1,0.2,0.3,0.4,1.5)
 SE <- c(0.01, 0.02, 0.01, 0.08, 0.1)
-Method <- "fixed"
+Method <- "Fixed"
 MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
-Method <- "REML"
+Method <- "DL"
 MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
 }
