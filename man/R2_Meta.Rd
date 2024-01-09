@@ -4,7 +4,12 @@
 \alias{R2_Meta}
 \title{R2_Meta.R}
 \usage{
-R2_Meta(Effects, Study = NULL, SE, Method = "fixed")
+R2_Meta(
+  Effects,
+  Study = NULL,
+  SE,
+  Method = c("Fixed", "REML", "PM", "DL", "ML")
+)
 }
 \arguments{
 \item{Effects}{Estimated R2M for each study.}
@@ -16,9 +21,7 @@ R2_Meta(Effects, Study = NULL, SE, Method = "fixed")
 \item{Method}{Methods for the meta-analysis.}
 }
 \value{
-A list with the three elements:
-\itemize{
-\item A named vector with elements:
+A named vector with elements:
 \describe{
 \item{R2M}{Estimated R2-based total mediation effect.}
 \item{SE}{Asymptotic standard errors for R2M.}
@@ -37,9 +40,6 @@ A list with the three elements:
 \item{SampleSize}{Sample size used in the analysis}
 \item{NumMeds}{Number of total mediators for the input.}
 }
-\item \code{m1}{Selected mediators in subsample 1.}
-\item \code{m2}{Selected mediators in subsample 2.}
-}
 }
 \description{
 A novel meta-analysis framework of the R-squared (R2)-based mediation effect estimation for high-dimensional omics mediators.
@@ -49,5 +49,7 @@ Study <- c(1,2,3,4,5)
 Effects <- c(0.1,0.2,0.3,0.4,1.5)
 SE <- c(0.01, 0.02, 0.01, 0.08, 0.1)
 Method <- "fixed"
+MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
+Method <- "REML"
 MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
 }

@@ -7,9 +7,7 @@
 #' @param SE Asymptotic standard errors for each study.
 #' @param Method Methods for the meta-analysis.
 #'
-#' @return A list with the three elements:
-#' \itemize{
-#'   \item A named vector with elements:
+#' @return A named vector with elements:
 #'     \describe{
 #'       \item{R2M}{Estimated R2-based total mediation effect.}
 #'       \item{SE}{Asymptotic standard errors for R2M.}
@@ -28,13 +26,10 @@
 #'       \item{SampleSize}{Sample size used in the analysis}
 #'       \item{NumMeds}{Number of total mediators for the input.}
 #'     }
-#'   \item \code{m1}{Selected mediators in subsample 1.}
-#'   \item \code{m2}{Selected mediators in subsample 2.}
-#' }
 #'
 #'
 #'
-#' @importFrom mvmeta mvmeta
+#' @importFrom meta metagen
 #'
 #' @export
 #' @examples
@@ -43,7 +38,9 @@
 #' SE <- c(0.01, 0.02, 0.01, 0.08, 0.1)
 #' Method <- "fixed"
 #' MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
-R2_Meta <- function(Effects, Study=NULL, SE, Method="fixed"){
+#' Method <- "REML"
+#' MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
+R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL", "ML")){
   if(is.null(Study)){
     study_names <- seq_len(length(Effects))
   }else{
@@ -52,14 +49,15 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method="fixed"){
 
   # Construct the data frame for the meta-analysis
   resultDF_S <- data.frame(Study = study_names, EstR2_S_tem = Effects, EstSD_S_tem = SE)
-  maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method=Method)
+  maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, method.tau = Method)
+  # maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method=Method)
+
+  # if()
+  maFixed$TE.common
+
   meta_effect <- as.numeric(maFixed$coefficients)
 
   return(c(meta_effect=meta_effect))
-
-
-
-
 }
 
 
