@@ -5,10 +5,11 @@
 \alias{exampleData}
 \title{Simulated data using Gompertz distribution}
 \format{
-A list of 2 with 1000 observations
+A list of 4 studies with
 \describe{
-\item{tempTime}{The time-to-event observed time.}
-\item{tempType}{The type of causes to the outcome: primary outcome (1) or competing event (2).}
+\item{X}{The time-to-event observed time.}
+\item{Y}{The type of causes to the outcome: primary outcome (1) or competing event (2).}
+\item{Y}{The type of causes to the outcome: primary outcome (1) or competing event (2).}
 }
 }
 \usage{
@@ -18,6 +19,6 @@ exampleData
 simulated time-to-event outcome and event type
 }
 \references{
-\url{https://onlinelibrary.wiley.com/doi/10.1111/biom.12109}
+\url{https://www.biorxiv.org/content/10.1101/2023.02.06.527391v1.abstract}
 }
 \keyword{datasets}
