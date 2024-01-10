@@ -15,34 +15,24 @@ Fixed-effects models require the assumption that the true effects of interest ar
 ## Get started
 Download and install following required R packages:
 
-- Download [crSKAT](https://github.com/zhichaoxu04/crSKAT) package from
-  Github using:
+- Download [MetaR2M](https://github.com/zhichaoxu04/MetaR2M) package from Github using:
 
 <!-- -->
 
     git clone https://github.com/zhichaoxu04/crSKAT.git
 
-- Or, install [crSKAT](https://github.com/zhichaoxu04/crSKAT) package in
-  R directly
+- Or, install [MetaR2M](https://github.com/zhichaoxu04/MetaR2M) package in R directly
 
-  - First, install [devtools](https://devtools.r-lib.org) in R from
-    CRAN:
-
+  - First, install [devtools](https://devtools.r-lib.org) in R from CRAN:
     ``` r
     install.packages("devtools")
     ```
-
-  - Then, install [crSKAT](https://github.com/zhichaoxu04/crSKAT) using
-    the `install_github` function and load the package:
-
+  - Then, install [MetaR2M](https://github.com/zhichaoxu04/MetaR2M) using the `install_github` function and load the package:
     ``` r
     devtools::install_github("zhichaoxu04/crSKAT")
     library(crSKAT)
     ```
-
-- Make sure that all the required packages have been installed or
-  updated. Here are some of the required packages:
-
+- Make sure that all the required packages have been installed or updated. Here are some of the required packages:
   - [CompQuadForm](https://cran.r-project.org/web/packages/CompQuadForm/index.html):
     Compute the distribution function of quadratic forms in normal
     variables using Imhof’s method, Davies’s algorithm, Farebrother’s
@@ -78,78 +68,3 @@ each of these 50 SNPs. Alongside the genetic data, we also possess
 details on non-genetic covariates: one being categorical and the other
 one continuous.
 
-``` r
-library(crSKAT)
-# ---- Initialization of random seed, sample size, the number of SNPs, and parameters
-set.seed(1)
-n <- 5000
-q <- 50
-alpha1 <- -0.058
-alpha2 <- -0.035
-beta1 <- 0.03
-beta2 <- log(1 - exp(beta1 / alpha1)) * alpha2
-
-# ---- Generate dataset
-# Assume all SNPs have MAF of 0.2 in this toy example
-gMat <- matrix(data=rbinom(n=n*q, size=2, prob=0.2), nrow=n)
-gSummed <- matrix(data=apply(gMat, 1, sum), ncol=1)
-# Two covariates (one categorical and one continuous)
-xMat <- matrix(data=c(rbinom(n=n, size=1, prob=0.5), 
-                      runif(n=n, min=0, max=10)), 
-               nrow=n)
-# Observation time windows
-obsTimes <- seq(4, 28, 7)
-# Generate data
-outcomeDat <- crSKAT::genData(seed=2023, n=n, 
-                              alpha1=alpha1, alpha2=alpha2, 
-                              beta1=beta1, beta2=beta2,
-                              obsTimes=obsTimes, probMiss=0.1, 
-                              windowHalf=.25)
-# Left/right exact time for each subject
-lt <- outcomeDat$leftTimes
-rt <- outcomeDat$rightTimes
-# Indicator of right-censored or not
-obsInd <- outcomeDat$deltaVecSimple
-# Indicator of competing outcome or primary outcome
-deltaVec <- outcomeDat$deltaVec
-
-# ---- Perform inference
-# make design matrix with cubic spline terms using one knot
-dmats <- crSKAT::makeICdmat(xMat=xMat, lt=lt, rt=rt, 
-                            obsInd=obsInd, quant_r=NULL, nKnots=1)
-# Fit null model using the genotype information 
-# only need to do this once for each genetic set 
-# note: there is only gSummed on the SNPs used here, which will be constant
-nullFit <- crSKAT::crSKAT_fit_null(init_beta=c(rep(0,10),.001), 
-                                   leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat,
-                                   deltaVec=deltaVec, leftTimes=lt, gSummed=gSummed, 
-                                   allowSingular=TRUE, method="Broyden")
-
-# Perform the crSKAT and crBurden test
-crICSKATOut <- crSKAT::crSKAT(leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat, 
-                              leftTimes=lt,deltaVec=deltaVec, gMat=gMat, 
-                              gSummed=gSummed, null_beta=nullFit$beta_fit, 
-                              pvalue=TRUE)
-# p-value of crSKAT
-crICSKATOut$p_SKAT
-#> [1] 0.6765122
-# p-value of crBurden test
-crICSKATOut$p_burden
-#> [1] 0.5926542
-
-# --- Test another genotype matrix, we DO NOT need to fit the null model again
-# Generate another set of SNPs
-gMat <- matrix(data=rbinom(n=n*q, size=2, prob=0.1), nrow=n)
-gSummed <- matrix(data=apply(gMat, 1, sum), ncol=1)
-# Perform the crSKAT and crBurden test again
-crICSKATOut <- crSKAT::crSKAT(leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat, 
-                              leftTimes=lt,deltaVec=deltaVec, gMat=gMat, 
-                              gSummed=gSummed, null_beta=nullFit$beta_fit, 
-                              pvalue=TRUE)
-# p-value of crSKAT
-crICSKATOut$p_SKAT
-#> [1] 0.9850078
-# p-value of crBurden test
-crICSKATOut$p_burden
-#> [1] 0.277369
-```
