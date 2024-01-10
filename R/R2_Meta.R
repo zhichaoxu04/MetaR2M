@@ -76,7 +76,8 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
 
 
 
-  return(c(meta_effect=meta_effect, meta_CI_lower=meta_CI_lower, meta_CI_upper=meta_CI_upper, Q=Q, Q_pval=Q_pval, Method=Method))
+  return(round(c(meta_effect=meta_effect, meta_CI_lower=meta_CI_lower,
+                 meta_CI_upper=meta_CI_upper, Q=Q, Q_pval=Q_pval, Method=Method), 4))
 }
 
 
