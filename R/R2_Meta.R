@@ -53,22 +53,22 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
   # maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method=Method)
 
   if(Method == "Fixed"){
-    meta_effect <- as.numeric(maFixed$TE.common)
-    meta_CI_lower <- as.numeric(maFixed$lower.common)
-    meta_CI_upper <- as.numeric(maFixed$upper.common)
-    Q <- as.numeric(maFixed$Q)
-    Q_pval <- as.numeric(maFixed$pval.Q)
+    meta_effect <- round(as.numeric(maFixed$TE.common), 4)
+    meta_CI_lower <- round(as.numeric(maFixed$lower.common), 4)
+    meta_CI_upper <- round(as.numeric(maFixed$upper.common), 4)
+    Q <- round(as.numeric(maFixed$Q), 4)
+    Q_pval <- round(as.numeric(maFixed$pval.Q), 4)
     if(Q_pval <= 0.05){
       message("p value of Q is <= 0.05, try random-effects model")
     }
 
 
   }else{
-    meta_effect <- as.numeric(maFixed$TE.random)
-    meta_CI_lower <- as.numeric(maFixed$lower.random)
-    meta_CI_upper <- as.numeric(maFixed$upper.random)
-    Q <- as.numeric(maFixed$Q)
-    Q_pval <- as.numeric(maFixed$pval.Q)
+    meta_effect <- round(as.numeric(maFixed$TE.random), 4)
+    meta_CI_lower <- round(as.numeric(maFixed$lower.random), 4)
+    meta_CI_upper <- round(as.numeric(maFixed$upper.random), 4)
+    Q <- round(as.numeric(maFixed$Q), 4)
+    Q_pval <- round(as.numeric(maFixed$pval.Q), 4)
     if(Q_pval > 0.05){
       message("p value of Q is <> 0.05, try fixed-effects model")
     }
@@ -76,8 +76,8 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
 
 
 
-  return(round(c(meta_effect=meta_effect, meta_CI_lower=meta_CI_lower,
-                 meta_CI_upper=meta_CI_upper, Q=Q, Q_pval=Q_pval, Method=Method), 4))
+  return(c(meta_effect=meta_effect, meta_CI_lower=meta_CI_lower,
+                 meta_CI_upper=meta_CI_upper, Q=Q, Q_pval=Q_pval, Method=Method))
 }
 
 
