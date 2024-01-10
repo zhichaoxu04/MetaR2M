@@ -54,4 +54,6 @@ Let's suppose we aim to perform a meta-analysis using data from four distinct co
 library(MetaR2M)
 utils::data(exampleData)
 ```
+## Notes:
 
+The MetaR2M package is built upon the foundations of the [meta](https://cran.r-project.org/web/packages/meta/index.html) and [SIS](https://cran.r-project.org/web/packages/SIS/index.html). We extend our heartfelt gratitude to the authors of these packages for their invaluable contributions.
