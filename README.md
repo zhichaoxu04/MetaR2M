@@ -7,7 +7,7 @@ Meta-analysis is a statistical technique used to combine the results of multiple
 </br>
 
 ### Fixed/Random-effects model
-Fixed-effects models require the assumption that the true effects of interest are identical across all studies or cohorts. Random-effects models are used when there is heterogeneity across the studies included in the meta-analysis.
+Fixed-effects models require the assumption that the true effects of interest are identical across all studies or cohorts. Random-effects models are used when there is heterogeneity across the studies included in the meta-analysis. In meta-analysis, the choice between a fixed-effect and a random-effects model is fundamental and depends on the underlying assumptions about the nature of the effects being analyzed.
 
 <div align="center"><img src="man/Figure/FRmodels.png" ></div>
 </br>
