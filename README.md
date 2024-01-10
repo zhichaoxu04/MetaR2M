@@ -36,8 +36,8 @@ Download and install following required R packages:
     ```
   - Then, install [MetaR2M](https://github.com/zhichaoxu04/MetaR2M) using the `install_github` function and load the package:
     ``` r
-    devtools::install_github("zhichaoxu04/crSKAT")
-    library(crSKAT)
+    devtools::install_github("zhichaoxu04/MetaR2M")
+    library(MetaR2M)
     ```
 - Make sure that all the required packages have been installed or updated. Here are some of the required packages:
   - [CompQuadForm](https://cran.r-project.org/web/packages/CompQuadForm/index.html):
