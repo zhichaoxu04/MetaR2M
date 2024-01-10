@@ -52,5 +52,6 @@ Let's suppose we aim to perform a meta-analysis using data from four distinct co
 
 ```r
 library(MetaR2M)
+utils::data(exampleData)
 ```
 
