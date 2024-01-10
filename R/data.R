@@ -1,12 +1,12 @@
-#' @title Simulated data using Gompertz distribution
+#' @title Simulated data for tutorial
 #'
-#' @description simulated time-to-event outcome and event type
+#' @description simulated 4 independent studies for meta-analysis
 #'
-#' @format A list of 4 studies with
+#' @format A list of 4 studies with different sample sizes and each of them contains:
 #' \describe{
-#'   \item{X}{The time-to-event observed time.}
-#'   \item{Y}{The type of causes to the outcome: primary outcome (1) or competing event (2).}
-#'   \item{Y}{The type of causes to the outcome: primary outcome (1) or competing event (2).}
+#'   \item{X}{The exposure mimics age}
+#'   \item{Y}{The outcome mimics systolic blood pressure}
+#'   \item{M}{The mediators}
 #' }
 #' @references <https://www.biorxiv.org/content/10.1101/2023.02.06.527391v1.abstract>
 "exampleData"
