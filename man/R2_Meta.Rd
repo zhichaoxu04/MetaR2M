@@ -23,14 +23,12 @@ R2_Meta(
 \value{
 A named vector with elements:
 \describe{
-\item{R2M}{Estimated R2-based total mediation effect.}
-\item{SE}{Asymptotic standard errors for R2M.}
-\item{CI_width}{Half width of the 95\% confidence interval.}
-\item{CI_lower}{Lower bound of the 95\% confidence interval.}
-\item{CI_upper}{Upper bound of the 95\% confidence interval.}
-\item{p1}{Number of selected mediators in subsample 1.}
-\item{p2}{Number of selected mediators in subsample 2.}
-\item{R_YX}{Estimated R2 between X and Y.}
+\item{meta_effect}{Estimated R2-based total mediation effect using meta-analysis.}
+\item{meta_CI_lower}{Lower bound of the 95\% confidence interval.}
+\item{meta_CI_upper}{Upper bound of the 95\% confidence interval.}
+\item{Q}{Statistic used to test for heterogeneity among the studies included in the analysis.}
+\item{Q_pval}{The p-value associated with the statistic.}
+\item{Method}{Method is used to estimate the between-study variance in random effects model or fixed effects model.}
 }
 }
 \description{
