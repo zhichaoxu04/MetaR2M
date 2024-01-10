@@ -1,15 +1,19 @@
 Package: MetaR2M
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: A novel meta-analysis framework for high-dimensional R2-based total mediation effect estimation
+Version: 1.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Zhichao", "Xu", , "zhichaoxu15@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-3935-8865"))
+Description: A novel meta-analysis framework of the R-squared (R2)-based mediation effect estimation for high-dimensional omics mediators.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
 Depends: 
-    R (>= 2.10)
+    R (>= 3.50)
+Imports:
+  HDMT,
+  SIS,
+  dplyr,
+  meta
 LazyData: true

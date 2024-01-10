@@ -48,7 +48,7 @@
 #' @export
 #' @examples
 #' data(exampleData)
-#' CF_OLS(Y=exampleData$study4$Y, M=exampleData$study4[, 3:52], X=exampleData$study4$X, FDR=F)
+#' CF_OLS(Y=exampleData$study4$Y, M=exampleData$study4[, 3:52], X=exampleData$study4$X, FDR=FALSE)
 CF_OLS <- function(Y, M, Covar=NULL, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
 
   # Set Seed for reproducibility
@@ -260,9 +260,9 @@ CF_OLS <- function(Y, M, Covar=NULL, X, iter.max=3, nsis=NULL, seed=2024, FDR=FA
     m2 <- which(JM_FDR2 <= FDRCutoff)
     pabBefore_2 <- length(m2)
     pabAfter_2 <- length(m2)
-    if(pabAfter_1 == 0 | pabAfter_1 == 0){
+    if(pabAfter_1 == 0 | pabAfter_2 == 0){
       cat("There is no mediators selected.", "\n")
-      break
+      return()
     }
 
   }else if(method == "iSIS"){

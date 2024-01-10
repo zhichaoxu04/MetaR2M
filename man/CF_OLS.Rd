@@ -69,5 +69,5 @@ A more efficient two-stage cross-fitted estimation procedure for the R-squared m
 }
 \examples{
 data(exampleData)
-CF_OLS(Y=exampleData$study4$Y, M=exampleData$study4[, 3:52], X=exampleData$study4$X, FDR=F)
+CF_OLS(Y=exampleData$study4$Y, M=exampleData$study4[, 3:52], X=exampleData$study4$X, FDR=FALSE)
 }
