@@ -48,20 +48,9 @@ Download and install following required R packages:
 
 ## Toy Example
 
-Let’s assume our objective is to study the possible association between
-a specific gene and the time taken for a fracture to occur. In this
-context, death acts as the competing risk. To delve into this premise,
-we’ll simulate event times for 5,000 subjects based on a proportional
-hazards model. Observations will be scheduled at four distinct times: 4,
-11, 18, and 25. Each participant’s precise observation time will be
-determined by a random draw from a Uniform(-0.25, 0.25) distribution
-centered around these predefined times. Furthermore, there’s a 10%
-chance for any participant to miss a scheduled visit.
+Let's suppose we aim to perform a meta-analysis using data from four distinct cohorts within a substantial genetic database. Our goal is to assess the mediating impact of gene expression on the age-related variations observed in systolic blood pressure (BP). For illustrative purposes, we will utilize the example data preloaded in our package as a representative sample for this analysis.
 
-The genetic dataset will include information on 50 single nucleotide
-polymorphisms (SNPs) related to the gene in question. For every patient,
-their minor allele count, which can be 0, 1, or 2, is documented for
-each of these 50 SNPs. Alongside the genetic data, we also possess
-details on non-genetic covariates: one being categorical and the other
-one continuous.
+```r
+library(MetaR2M)
+```
 
