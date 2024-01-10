@@ -7,7 +7,7 @@
 CF_OLS(
   Y,
   M,
-  Covar,
+  Covar = NULL,
   X,
   iter.max = 3,
   nsis = NULL,
@@ -68,5 +68,6 @@ A list with the three elements:
 A more efficient two-stage cross-fitted estimation procedure for the R-squared measure in the presence of high-dimensional omics mediators.
 }
 \examples{
-p0 <- 20
+data(exampleData)
+CF_OLS(Y=exampleData$study4$Y, M=exampleData$study4[, 3:52], X=exampleData$study4$X, FDR=F)
 }

@@ -47,8 +47,9 @@
 #'
 #' @export
 #' @examples
-#' p0 <- 20
-CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
+#' data(exampleData)
+#' CF_OLS(Y=exampleData$study4$Y, M=exampleData$study4[, 3:52], X=exampleData$study4$X, FDR=F)
+CF_OLS <- function(Y, M, Covar=NULL, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, FDRCutoff=0.2, method="iSIS"){
 
   # Set Seed for reproducibility
   set.seed(seed)
@@ -56,7 +57,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
 
   n_Y <- length(Y)
   n_X <- length(X)
-  n_M <- length(M)
+  n_M <- nrow(M)
   if(n_Y!= n_X | n_Y!= n_M | n_X!= n_M){
     stop("Sample size of Y, X, or M does not match.")
   }else{
@@ -427,7 +428,7 @@ CF_OLS <- function(Y, M, Covar, X, iter.max=3, nsis=NULL, seed=2024, FDR=FALSE, 
                          # M1c=as.numeric(M1c), M2c=as.numeric(M2c), M1Gamma=as.numeric(M1Gamma), M2Gamma=as.numeric(M2Gamma),
                          Time=TimeUsed,
                          SampleSize=round(n,0), NumMeds=round(d,0)),
-              select1 = m1,
-              select2 = m2))
+              select1 = colnames(M)[m1],
+              select2 = colnames(M)[m2]))
 }
 
