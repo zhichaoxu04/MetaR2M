@@ -42,12 +42,13 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
 
 
   if(Method == "Fixed"){
-    Method_tem <- "DL"
+    maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, common = TRUE, random = FALSE)
   }else{
     Method_tem <- Method
+    maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, common = FALSE, random = TRUE, method.tau = Method_tem)
   }
 
-  maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, method.tau = Method_tem)
+
   # maFixed <- mvmeta::mvmeta(resultDF_S$EstR2_S_tem ~ 1, S=resultDF_S$EstSD_S_tem^2, method=Method)
 
   if(Method == "Fixed"){

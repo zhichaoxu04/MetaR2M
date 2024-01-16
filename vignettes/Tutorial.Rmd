@@ -87,7 +87,7 @@ result1$output
 
 This outcome suggests that there are no mediating effects between age and systolic blood pressure via the 50 simulated mediators, as evidenced by the inclusion of 0 in the confidence interval. This is a logical finding, considering that these variables were simulated from independent distributions. By replicating this process, we can obtain an estimate of R2M and its standard error, which then allows us to advance to the meta-analysis of R2M.
 
-Suppose we get the estimate of R2M for 10 different studies. We simulated the effects here first from a normal distribution with mean 0.5 and standard error 0.1. We simulated the corresponding standard error from a uniform distribution from 0.1 to 0.2.
+Assume we have obtained R2M estimates from 10 independent studies. Initially, we simulated these effects using a normal distribution, with a mean of 0.5 and a standard error of 0.1. We also generated the corresponding standard errors from a uniform distribution ranging between 0.1 and 0.2. In this scenario, we conducted both fixed-effects and random-effects meta-analyses. The results indicate, based on the heterogeneity test, that the fixed-effects model is more appropriate. The meta-analysis provided an estimate of 0.4871, with a confidence interval ranging from 0.3969 to 0.5772.
 
 ```{r}
 Study <- rep(1:10)
@@ -100,7 +100,18 @@ MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
 
 ```
 
+After that, we try to increase the variation of the 10 estimates, we increase the standard error of its sampling distribution.
 
+```{r}
+Study <- rep(1:10)
+Effects <- stats::rnorm(10, 0.5, 1)
+SE <- stats::runif(10, 0.1, 0.2)
+Method <- "Fixed"
+MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
+Method <- "DL"
+MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
+
+```
 
 ## Notes:
 Questions or novel applications? Please let me know! Contact information can be found in the [Github](https://github.com/zhichaoxu04). 
