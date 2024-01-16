@@ -249,7 +249,8 @@ The `forest.meta` function in the `meta` package of R is a powerful tool for met
                  text.w.random = "Random")
 ```
 
-
+<div align="center"><img src="man/Figure/Tutorial_Fig2.png" ></div>
+</br>
 
 Some tips for visualization:
 
