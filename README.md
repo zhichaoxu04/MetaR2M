@@ -254,26 +254,15 @@ The `forest.meta` function in the `meta` package of R is a powerful tool for met
 
 Some tips for visualization:
 
--   Versatile Data Representation: It allows the user to represent the
-    data from meta-analyses, including effect sizes, confidence
-    intervals, and levels of statistical significance.
+-   Versatile Data Representation: It allows the user to represent the data from meta-analyses, including effect sizes, confidence intervals, and levels of statistical significance.
 
--   Customizable Plots: forest.meta offers extensive customization
-    options, such as modifying the size and color of the plot markers,
-    adjusting text labels, and choosing between fixed or random effects
-    models.
+-   Customizable Plots: forest.meta offers extensive customization options, such as modifying the size and color of the plot markers, adjusting text labels, and choosing between fixed or random effects models.
 
--   Heterogeneity Insights: The function provides a visual understanding
-    of the heterogeneity among the study results, which is crucial for
-    interpreting meta-analysis findings.
+-   Heterogeneity Insights: The function provides a visual understanding of the heterogeneity among the study results, which is crucial for interpreting meta-analysis findings.
 
--   Inclusion of Summary Measure: It can include a pooled estimate of
-    the overall effect size, enhancing the comprehension of the overall
-    analysis impact.
+-   Inclusion of Summary Measure: It can include a pooled estimate of the overall effect size, enhancing the comprehension of the overall analysis impact.
 
--   User-Friendly Interface: Designed to be accessible for both novice
-    and advanced R users, facilitating a range of meta-analytical
-    research needs.
+-   User-Friendly Interface: Designed to be accessible for both novice and advanced R users, facilitating a range of meta-analytical research needs.
 
 
 ## Notes:
