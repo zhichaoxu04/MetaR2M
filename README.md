@@ -49,36 +49,18 @@ Download and install following required R packages:
   - [meta](https://cran.r-project.org/web/packages/meta/index.html): User-friendly general package providing standard methods for meta-analysis and supporting Schwarzer, Carpenter, and Rücker, ["Meta-Analysis with R" (2015)](https://link.springer.com/book/10.1007/978-3-319-21416-0).
 
 ## Toy Example
-Let’s suppose we aim to perform a meta-analysis using data from four
-distinct cohorts within a substantial genetic database. Our goal is to
-assess the mediating impact of gene expression on the age-related
-variations observed in systolic blood pressure (BP). For illustrative
-purposes, we will utilize the example data preloaded in our package as a
-representative sample for this analysis.
+Let’s suppose we aim to perform a meta-analysis using data from four distinct cohorts within a substantial genetic database. Our goal is to assess the mediating impact of gene expression on the age-related
+variations observed in systolic blood pressure (BP). For illustrative purposes, we will utilize the example data preloaded in our package as a representative sample for this analysis.
 
-The outcome Y will be the systolic BP generated from a normal
-distribution with mean 100 and standard error 15. The exposure X will be
-the age generate from a normal distribution with mean 60 with standard
-error 10.
+The outcome Y will be the systolic BP generated from a normal distribution with mean 100 and standard error 15. The exposure X will be the age generate from a normal distribution with mean 60 with standard error 10.
 
+```r
     # Install the package
     devtools::install_github("zhichaoxu04/MetaR2M")
 
     # Load the dataset in the package
     library(MetaR2M)
     library(dplyr)
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
     data("exampleData")
 
     # Check the data structure
@@ -102,32 +84,14 @@ error 10.
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
     ##   34.01   51.52   58.38   59.05   65.78   95.68
+```
 
+```r
     # Use the first study to run CF-OLS to get the R2M
     Y <- exampleData$study1$Y
     M <- exampleData$study1 %>% dplyr::select(dplyr::starts_with("M_"))
     X<- exampleData$study1$X
     result1 <- CF_OLS(Y=Y, M=M, X=X, FDR=FALSE)
-
-    ## Iter 1 , screening:  1 2 5 6 7 8 10 11 12 13 16 17 19 20 22 24 25 26 27 28 29 30 34 35 36 37 39 40 41 42 45 48 49 
-    ## Iter 1 , selection:  1 2 5 6 7 8 10 11 12 13 16 17 19 20 22 24 25 26 27 28 29 30 35 36 37 39 40 41 42 45 48 49 
-    ## Iter 1 , conditional-screening:  3 4 9 14 15 18 21 23 31 32 33 34 38 43 44 46 47 50 
-    ## Iter 2 , screening:  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
-    ## Iter 2 , selection:  1 2 3 4 5 7 8 10 11 13 14 15 16 17 18 20 21 22 23 24 25 26 28 29 30 31 32 33 35 37 38 39 40 41 43 44 45 47 48 49 50 
-    ## Iter 2 , conditional-screening:  6 9 12 19 27 34 36 42 46 
-    ## Iter 3 , screening:  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
-    ## Iter 3 , selection:  1 2 3 4 5 7 8 10 11 13 14 15 16 17 18 20 21 22 23 24 25 26 28 29 30 31 32 33 35 37 38 39 40 41 43 44 45 47 48 49 50 
-    ## Maximum number of iterations reached 
-    ## Iter 1 , screening:  1 2 3 5 10 11 12 13 14 15 18 19 20 25 26 27 29 30 32 33 34 35 36 37 39 40 42 43 44 45 46 49 50 
-    ## Iter 1 , selection:  1 2 3 5 10 11 12 13 14 15 18 19 25 26 27 29 30 32 34 36 37 39 40 42 43 44 45 46 49 50 
-    ## Iter 1 , conditional-screening:  4 6 7 8 9 16 17 20 21 22 23 24 28 31 33 35 38 41 47 48 
-    ## Iter 2 , screening:  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
-    ## Iter 2 , selection:  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 30 32 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
-    ## Iter 2 , conditional-screening:  29 31 33 
-    ## Iter 3 , screening:  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
-    ## Iter 3 , selection:  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 30 32 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
-    ## Maximum number of iterations reached
-
     result1$output
 
     ##           R2M            SE      CI_width      CI_lower      CI_upper 
@@ -138,25 +102,13 @@ error 10.
     ##   0.367131245  -1.000468122   1.734730612   0.014590967 300.000000000 
     ##       NumMeds 
     ##  50.000000000
+```
 
-This outcome suggests that there are no mediating effects between age
-and systolic blood pressure via the 50 simulated mediators, as evidenced
-by the inclusion of 0 in the confidence interval. This is a logical
-finding, considering that these variables were simulated from
-independent distributions. By replicating this process, we can obtain an
-estimate of R2M and its standard error, which then allows us to advance
-to the meta-analysis of R2M.
+This outcome suggests that there are no mediating effects between age and systolic blood pressure via the 50 simulated mediators, as evidenced by the inclusion of 0 in the confidence interval. This is a logical,finding, considering that these variables were simulated from independent distributions. By replicating this process, we can obtain an estimate of R2M and its standard error, which then allows us to advance to the meta-analysis of R2M.
 
-Assume we have obtained R2M estimates from 10 independent studies.
-Initially, we simulated these effects using a normal distribution, with
-a mean of 0.5 and a standard error of 0.1. We also generated the
-corresponding standard errors from a uniform distribution ranging
-between 0.1 and 0.2. In this scenario, we conducted both fixed-effects
-and random-effects meta-analyses. The results indicate, based on the
-heterogeneity test, that the fixed-effects model is more appropriate.
-The meta-analysis provided an estimate of 0.5276, with a confidence
-interval ranging from 0.4447 to 0.6106.
+Assume we have obtained R2M estimates from 10 independent studies. Initially, we simulated these effects using a normal distribution, with a mean of 0.5 and a standard error of 0.1. We also generated the corresponding standard errors from a uniform distribution ranging between 0.1 and 0.2. In this scenario, we conducted both fixed-effects and random-effects meta-analyses. The results indicate, based on the heterogeneity test, that the fixed-effects model is more appropriate. The meta-analysis provided an estimate of 0.5276, with a confidence interval ranging from 0.4447 to 0.6106.
 
+```r
     set.seed(1)
     Study1 <- rep(1:10)
     Effects1 <- stats::rnorm(10, 0.5, 0.1)
@@ -178,13 +130,11 @@ interval ranging from 0.4447 to 0.6106.
     ##      "0.5276"      "0.4447"      "0.6106"       "3.047"      "0.9624" 
     ##        Method 
     ##          "DL"
+```
 
-After that, we attempt to increase the variation among the 10 estimates
-by raising the standard error to 1 in its sampling distribution. The
-results show that we should opt for the random-effects model. In this
-model, the meta-analysis estimate is 0.7042, with a confidence interval
-ranging from 0.1698 to 1.2386.
+After that, we attempt to increase the variation among the 10 estimates by raising the standard error to 1 in its sampling distribution. The results show that we should opt for the random-effects model. In this model, the meta-analysis estimate is 0.7042, with a confidence interval ranging from 0.1698 to 1.2386.
 
+```r
     set.seed(2)
     Study2 <- rep(1:10)
     Effects2 <- stats::rnorm(10, 0.5, 1)
@@ -206,25 +156,13 @@ ranging from 0.1698 to 1.2386.
     ##      "0.7042"      "0.1698"      "1.2386"    "347.2221"           "0" 
     ##        Method 
     ##          "DL"
+```
 
 ## visualization
 
-The `forest.meta` function in the `meta` package of R is a powerful tool
-for meta-analysis, providing a comprehensive way to visualize the
-results of meta-analytical studies. This function creates a forest plot,
-a graphical display designed to illustrate the relative strength of
-treatment effects in multiple quantitative scientific studies addressing
-the same question.
+The `forest.meta` function in the `meta` package of R is a powerful tool for meta-analysis, providing a comprehensive way to visualize the results of meta-analytical studies. This function creates a forest plot, a graphical display designed to illustrate the relative strength of treatment effects in multiple quantitative scientific studies addressing the same question.
 ```r
     library(meta)
-
-    ## Loading required package: metadat
-
-    ## Loading 'meta' package (version 7.0-0).
-    ## Type 'help(meta)' for a brief overview.
-    ## Readers of 'Meta-Analysis with R (Use R!)' should install
-    ## older version of 'meta' package: https://tinyurl.com/dt4y5drs
-
     # Construct a dataframe to plot
     data_to_plot1 <- data.frame(
       cohort = paste0("Study_", 1:10),
@@ -265,6 +203,8 @@ the same question.
                  text.w.random = "Random")
 ```
 
+<div align="center"><img src="man/Figure/Tutorial_Fig1.png" ></div>
+</br>
 
 ```r
     library(meta)
