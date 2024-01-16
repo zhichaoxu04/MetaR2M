@@ -113,23 +113,22 @@ Assume we have obtained R2M estimates from 10 independent studies. Initially, we
     Study1 <- rep(1:10)
     Effects1 <- stats::rnorm(10, 0.5, 0.1)
     SE1 <- stats::runif(10, 0.1, 0.2)
-    Method <- "Fixed"
-    MetaR2M::R2_Meta(Effects=Effects1, Study=Study1, SE=SE1, Method=Method)
-
-    ##   meta_effect meta_CI_lower meta_CI_upper             Q        Q_pval 
-    ##      "0.5276"      "0.4447"      "0.6106"       "3.047"      "0.9624" 
-    ##        Method 
-    ##       "Fixed"
 
     Method <- "DL"
     MetaR2M::R2_Meta(Effects=Effects1, Study=Study1, SE=SE1, Method=Method)
-
     ## p value of Q is >= 0.05, try fixed-effects model
 
     ##   meta_effect meta_CI_lower meta_CI_upper             Q        Q_pval 
     ##      "0.5276"      "0.4447"      "0.6106"       "3.047"      "0.9624" 
     ##        Method 
     ##          "DL"
+
+    Method <- "Fixed"
+    MetaR2M::R2_Meta(Effects=Effects1, Study=Study1, SE=SE1, Method=Method)
+    ##   meta_effect meta_CI_lower meta_CI_upper             Q        Q_pval 
+    ##      "0.5276"      "0.4447"      "0.6106"       "3.047"      "0.9624" 
+    ##        Method 
+    ##       "Fixed"
 ```
 
 After that, we attempt to increase the variation among the 10 estimates by raising the standard error to 1 in its sampling distribution. The results show that we should opt for the random-effects model. In this model, the meta-analysis estimate is 0.7042, with a confidence interval ranging from 0.1698 to 1.2386.
