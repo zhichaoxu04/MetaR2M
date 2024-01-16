@@ -84,10 +84,19 @@ result1 <- CF_OLS(Y=Y, M=M, X=X, FDR=FALSE)
 result1$output
 ```
 
-This result could be interpreted as there is no mediating effects between age and systolic BP through our simulated 50 mediators because the confidence interval includes 0. This makes sense because we simulated these variables from independent distributions. After repeating this procedure, we could get the etstimate of R2M and its standard error. Then we could proceed to the meta-analysis of the R2M.
+
+This outcome suggests that there are no mediating effects between age and systolic blood pressure via the 50 simulated mediators, as evidenced by the inclusion of 0 in the confidence interval. This is a logical finding, considering that these variables were simulated from independent distributions. By replicating this process, we can obtain an estimate of R2M and its standard error, which then allows us to advance to the meta-analysis of R2M.
+
+Suppose we get the estimate of R2M for 10 different studies. We simulated the effects here first from a normal distribution with mean 0.5 and standard error 0.1. We simulated the corresponding standard error from a uniform distribution from 0.1 to 0.2.
 
 ```{r}
-
+Study <- rep(1:10)
+Effects <- stats::rnorm(10, 0.5, 0.1)
+SE <- stats::runif(10, 0.1, 0.2)
+Method <- "Fixed"
+MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
+Method <- "DL"
+MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
 
 ```
 

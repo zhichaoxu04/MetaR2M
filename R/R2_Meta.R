@@ -68,7 +68,7 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
     Q <- round(as.numeric(maFixed$Q), 4)
     Q_pval <- round(as.numeric(maFixed$pval.Q), 4)
     if(Q_pval > 0.05){
-      message("p value of Q is <> 0.05, try fixed-effects model")
+      message("p value of Q is >= 0.05, try fixed-effects model")
     }
   }
 
