@@ -2,7 +2,7 @@
 title: "MetaR2M Tutorial"
 author: "Zhichao Xu, and Peng Wei"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: md_document
 vignette: >
     %\VignetteIndexEntry{MetaR2M Tutorial}
     %\VignetteEngine{knitr::rmarkdown}
