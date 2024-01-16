@@ -116,9 +116,11 @@ MetaR2M::R2_Meta(Effects=Effects2, Study=Study2, SE=SE2, Method=Method)
 
 ```
 
-## Visulization
+## visualization
 
-```{r}
+The `forest.meta` function in the `meta` package of R is a powerful tool for meta-analysis, providing a comprehensive way to visualize the results of meta-analytical studies. This function creates a forest plot, a graphical display designed to illustrate the relative strength of treatment effects in multiple quantitative scientific studies addressing the same question.
+
+```{r fig.width=9, fig.height=4}
 library(meta)
 # Construct a dataframe to plot
 data_to_plot1 <- data.frame(
@@ -131,16 +133,52 @@ data_to_plot1 <- data.frame(
 res <- meta::metagen(TE=effect_size, seTE=se, studlab=cohort, data=data_to_plot1, random = F)
 print(res)
 meta::forest(res, leftcols = c("studlab", "SampleSize", "se"),
-             leftlabs = c("Cohort", "Sample Size", "Tech", "SE", "# of transcripts"),
-             rightcols = c("effect.ci", "w.fixed"), rightlabs = c("R2 [95% CI]", "Weight"),
+             leftlabs = c("Cohort", "Sample Size", "SE"),
+             rightcols = c("effect.ci", "w.fixed"), rightlabs = c("R2M [95% CI]", "Weight"),
              prediction = F, method.tau = "HE", digits = 3,
-             print.tau2 = FALSE, 
+             print.tau2 = FALSE,xlim = c(0, 1), 
              col.square = c("#ADD8E6"), col.diamond = c("#FF8C00"), text.common = "Fixed-effects model",
              text.random = "Random-effects model",
              text.w.common = "Fixed",
              text.w.random = "Random")
 
 ```
+
+```{r fig.width=9, fig.height=4}
+library(meta)
+# Construct a dataframe to plot
+data_to_plot1 <- data.frame(
+  cohort = paste0("Study_", 1:10),
+  SampleSize = paste0("SampleSize_", 1:10),
+  effect_size = Effects2,             
+  se = SE2
+)
+
+res <- meta::metagen(TE=effect_size, seTE=se, studlab=cohort, data=data_to_plot1, random = T)
+print(res)
+meta::forest(res, leftcols = c("studlab", "SampleSize", "se"),
+             leftlabs = c("Cohort", "Sample Size", "SE"),
+             rightcols = c("effect.ci", "w.fixed"), rightlabs = c("R2M [95% CI]", "Weight"),
+             prediction = F, method.tau = "HE", digits = 3,
+             print.tau2 = FALSE,
+             col.square = c("#9BCD9B"), col.diamond = c("#FF8C00"), text.common = "Fixed-effects model",
+             text.random = "Random-effects model",
+             text.w.common = "Fixed",
+             text.w.random = "Random")
+
+```
+
+Some tips for visualization:
+
+   - Versatile Data Representation: It allows the user to represent the data from meta-analyses, including effect sizes, confidence intervals, and levels of statistical significance.
+   
+   - Customizable Plots: forest.meta offers extensive customization options, such as modifying the size and color of the plot markers, adjusting text labels, and choosing between fixed or random effects models.
+   
+   - Heterogeneity Insights: The function provides a visual understanding of the heterogeneity among the study results, which is crucial for interpreting meta-analysis findings.
+   
+   - Inclusion of Summary Measure: It can include a pooled estimate of the overall effect size, enhancing the comprehension of the overall analysis impact.
+   
+   - User-Friendly Interface: Designed to be accessible for both novice and advanced R users, facilitating a range of meta-analytical research needs.
 
 ## Notes:
 Questions or novel applications? Please let me know! Contact information can be found in the [Github](https://github.com/zhichaoxu04). 
