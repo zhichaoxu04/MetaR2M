@@ -158,7 +158,7 @@ After that, we attempt to increase the variation among the 10 estimates by raisi
     ##          "DL"
 ```
 
-## visualization
+## Visualization
 
 The `forest.meta` function in the `meta` package of R is a powerful tool for meta-analysis, providing a comprehensive way to visualize the results of meta-analytical studies. This function creates a forest plot, a graphical display designed to illustrate the relative strength of treatment effects in multiple quantitative scientific studies addressing the same question.
 ```r
