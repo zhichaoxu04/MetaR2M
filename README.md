@@ -3,12 +3,12 @@
 This package presents a groundbreaking framework for conducting meta-analyses in high-dimensional settings, specifically for evaluating the R2-based total mediation effect. This innovative tool supports both fixed-effects and random-effects models, accommodating various research designs and high-throughput technologies. It is uniquely designed to handle the complexities inherent in high-dimensional data, a common feature in contemporary biomedical research.
 
 # Introduction
-## Meta-analysis
+### Meta-analysis
 Meta-analysis is a statistical technique used to combine the results of multiple studies to arrive at a comprehensive understanding of a particular field or topic. This method is especially prevalent in fields like medicine, psychology, and social sciences, where individual studies might have varying outcomes or small sample sizes. By aggregating data from several studies, a meta-analysis can provide more robust conclusions, identify patterns, and offer insights that might not be apparent from individual studies. 
 <div align="center"><img src="man/Figure/MetaAnalysis.png" ></div>
 </br>
 
-## Fixed/Random-effects model
+### Fixed/Random-effects model
 Fixed-effects models require the assumption that the true effects of interest are identical across all studies or cohorts. Random-effects models are used when there is heterogeneity across the studies included in the meta-analysis. In meta-analysis, the choice between a fixed-effect and a random-effects model is fundamental and depends on the underlying assumptions about the nature of the effects being analyzed.
 
 The fixed-effect model operates under the assumption that there is one true effect size that is common to all the studies being analyzed. In essence, it posits that any observed differences in effect sizes across studies are solely due to sampling error. This model is particularly appropriate when the meta-analysis includes studies that are highly similar in terms of participants, interventions, and outcomes, suggesting that they are all tapping into the same underlying effect. The key advantage of this model is its simplicity and increased statistical power due to the assumption of a single underlying effect. However, its major limitation is that it cannot account for variability beyond chance among different studies, which can lead to biased results if this assumption is violated.
@@ -18,11 +18,11 @@ On the other hand, the random-effects model acknowledges and accommodates hetero
 <div align="center"><img src="man/Figure/FRmodels.png" ></div>
 </br>
 
-## $Q$ statistic for heterogeneity
+### $Q$ statistic for heterogeneity
 The $Q$ statistic is a key measure in meta-analysis, primarily used to test for heterogeneity among the included studies. It is calculated as the weighted sum of squared differences between individual study effects and the overall effect estimate, where the weights are typically the inverse of each study's variance. The underlying principle of the $Q$ statistic is to determine whether the observed differences in study outcomes are greater than what would be expected by chance alone. Under the null hypothesis, which assumes homogeneity among the study effects (i.e., any differences are due to sampling error), the $Q$ statistic follows a chi-square distribution with degrees of freedom equal to the number of studies minus one. A significant $Q$ (usually indicated by a p-value less than a conventional threshold like 0.05) suggests the presence of heterogeneity, meaning that the variation in study results cannot be fully attributed to random chance. However,  $Q$'s power to detect heterogeneity depends on several factors, including the number of studies and their size. Due to this, $Q$ is often complemented with other measures, such as the $I^2$ statistic, which quantifies the proportion of total variation in study estimates due to heterogeneity.
 
 # Get started
-Download and install following required R packages:
+### Download and install:
 
 - Download [MetaR2M](https://github.com/zhichaoxu04/MetaR2M) package from Github using:
 
@@ -48,7 +48,7 @@ Download and install following required R packages:
   - [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html): A Grammar of Data Manipulation: a fast, consistent tool for working with data frame like objects, both in memory and out of memory.
   - [meta](https://cran.r-project.org/web/packages/meta/index.html): User-friendly general package providing standard methods for meta-analysis and supporting Schwarzer, Carpenter, and Rücker, ["Meta-Analysis with R" (2015)](https://link.springer.com/book/10.1007/978-3-319-21416-0).
 
-## Toy Example
+### Toy Example
 Let’s suppose we aim to perform a meta-analysis using data from four distinct cohorts within a substantial genetic database. Our goal is to assess the mediating impact of gene expression on the age-related
 variations observed in systolic blood pressure (BP). For illustrative purposes, we will utilize the example data preloaded in our package as a representative sample for this analysis.
 
@@ -158,7 +158,7 @@ After that, we attempt to increase the variation among the 10 estimates by raisi
     ##          "DL"
 ```
 
-## Visualization
+### Visualization
 
 The `forest.meta` function in the `meta` package of R is a powerful tool for meta-analysis, providing a comprehensive way to visualize the results of meta-analytical studies. This function creates a forest plot, a graphical display designed to illustrate the relative strength of treatment effects in multiple quantitative scientific studies addressing the same question.
 ```r
@@ -252,7 +252,7 @@ The `forest.meta` function in the `meta` package of R is a powerful tool for met
 <div align="center"><img src="man/Figure/Tutorial_Fig2.png" ></div>
 </br>
 
-Some tips for visualization:
+### Some tips for visualization:
 
 -   Versatile Data Representation: It allows the user to represent the data from meta-analyses, including effect sizes, confidence intervals, and levels of statistical significance.
 
@@ -265,7 +265,7 @@ Some tips for visualization:
 -   User-Friendly Interface: Designed to be accessible for both novice and advanced R users, facilitating a range of meta-analytical research needs.
 
 
-## Notes:
+# Notes:
 
 The MetaR2M package is built upon the foundations of the [meta](https://cran.r-project.org/web/packages/meta/index.html) and [SIS](https://cran.r-project.org/web/packages/SIS/index.html). We extend our heartfelt gratitude to the authors of these packages for their invaluable contributions. Questions or novel applications? Contact information
 can be found in the [Github](https://github.com/zhichaoxu04).
