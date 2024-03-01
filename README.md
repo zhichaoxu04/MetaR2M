@@ -28,7 +28,7 @@ The $Q$ statistic is a key measure in meta-analysis, primarily used to test for 
 
 <!-- -->
 
-    git clone https://github.com/zhichaoxu04/crSKAT.git
+    git clone https://github.com/zhichaoxu04/MetaR2M.git
 
 - Or, install [MetaR2M](https://github.com/zhichaoxu04/MetaR2M) package in R directly
 
