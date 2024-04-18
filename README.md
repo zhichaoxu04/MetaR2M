@@ -3,7 +3,7 @@
 This package presents a groundbreaking framework for conducting meta-analyses in high-dimensional settings, specifically for evaluating the R2-based total mediation effect. This innovative tool supports both fixed-effects and random-effects models, accommodating various research designs and high-throughput technologies. It is uniquely designed to handle the complexities inherent in high-dimensional data, a common feature in contemporary biomedical research.
 
 > [!IMPORTANT]  
-> For the simulation settings and computational details for the paper, please refer to [MetaR2M-paper](https://github.com/zhichaoxu04/MetaR2M). Here we only provide the R package.
+> For the simulation settings and computational details for the paper, please refer to [MetaR2M-paper](https://github.com/zhichaoxu04/MetaR2M-paper). Here we only provide the R package.
 
 # Introduction
 ### Meta-analysis
