@@ -19,7 +19,7 @@
 #'
 #'
 #'
-#' @importFrom meta metagen
+#' @importFrom meta metagen metafor
 #'
 #' @export
 #' @examples
@@ -30,7 +30,7 @@
 #' MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
 #' Method <- "DL"
 #' MetaR2M::R2_Meta(Effects=Effects, Study=Study, SE=SE, Method=Method)
-R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL", "ML")){
+R2_Meta <- function(Effects, Study=NULL, SE, Method=c("FE", "DL", "HE","HSk", "SJ", "ML", "REML", "EB", "PM", "GENQ", "PMM", "GENQM")){
   if(is.null(Study)){
     study_names <- seq_len(length(Effects))
   }else{
@@ -45,7 +45,8 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
     maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, common = TRUE, random = FALSE)
   }else{
     Method_tem <- Method
-    maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, common = FALSE, random = TRUE, method.tau = Method_tem)
+    # maFixed <- meta::metagen(TE=resultDF_S$EstR2_S_tem, seTE=resultDF_S$EstSD_S_tem, studlab=resultDF_S$Study, common = FALSE, random = TRUE, method.tau = Method_tem)
+    maFixed <- metafor::rma(yi = resultDF_S$EstR2_S_tem, sei = resultDF_S$EstSD_S_tem, method = method)
   }
 
 
@@ -53,8 +54,8 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
 
   if(Method == "Fixed"){
     meta_effect <- round(as.numeric(maFixed$TE.common), 4)
-    meta_CI_lower <- round(as.numeric(maFixed$lower.common), 4)
-    meta_CI_upper <- round(as.numeric(maFixed$upper.common), 4)
+    meta_CI_lower <- round(as.numeric(maFixed$lower.random), 4)
+    meta_CI_upper <- round(as.numeric(maFixed$upper.random), 4)
     Q <- round(as.numeric(maFixed$Q), 4)
     Q_pval <- round(as.numeric(maFixed$pval.Q), 4)
     if(Q_pval <= 0.05){
@@ -63,11 +64,12 @@ R2_Meta <- function(Effects, Study=NULL, SE, Method=c("Fixed", "REML", "PM", "DL
 
 
   }else{
-    meta_effect <- round(as.numeric(maFixed$TE.random), 4)
-    meta_CI_lower <- round(as.numeric(maFixed$lower.random), 4)
-    meta_CI_upper <- round(as.numeric(maFixed$upper.random), 4)
-    Q <- round(as.numeric(maFixed$Q), 4)
-    Q_pval <- round(as.numeric(maFixed$pval.Q), 4)
+    meta_effect <- round(as.numeric(maFixed$beta), 4)
+    meta_se <- round(as.numeric(analysis$se), 4)
+    meta_CI_lower <- round(meta_effect - qnorm(0.975), 4)
+    meta_CI_upper <- round(meta_effect + qnorm(0.975), 4)
+    Q <- round(as.numeric(maFixed$QE), 4)
+    Q_pval <- round(as.numeric(maFixed$QEp), 4)
     if(Q_pval > 0.05){
       message("p value of Q is >= 0.05, try fixed-effects model")
     }
