@@ -2,6 +2,9 @@
 
 This package presents a groundbreaking framework for conducting meta-analyses in high-dimensional settings, specifically for evaluating the R2-based total mediation effect. This innovative tool supports both fixed-effects and random-effects models, accommodating various research designs and high-throughput technologies. It is uniquely designed to handle the complexities inherent in high-dimensional data, a common feature in contemporary biomedical research.
 
+> [!IMPORTANT]  
+> For the simulation settings and computational details for the paper, please refer to [MetaR2M-paper](https://github.com/zhichaoxu04/MetaR2M). Here we only provide the R package.
+
 # Introduction
 ### Meta-analysis
 Meta-analysis is a statistical technique used to combine the results of multiple studies to arrive at a comprehensive understanding of a particular field or topic. This method is especially prevalent in fields like medicine, psychology, and social sciences, where individual studies might have varying outcomes or small sample sizes. By aggregating data from several studies, a meta-analysis can provide more robust conclusions, identify patterns, and offer insights that might not be apparent from individual studies. 
